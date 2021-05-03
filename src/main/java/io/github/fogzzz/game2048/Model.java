@@ -42,10 +42,10 @@ public class Model {
 
         for (int i = 0; i < FIELD_WIDTH; i++) {
             for (int j = 0; j < FIELD_WIDTH; j++) {
-                if (j != FIELD_WIDTH-1 && gameTiles[i][j].value == gameTiles[i][j+1].value) {
+                if (j != FIELD_WIDTH-1 && gameTiles[i][j].getValue() == gameTiles[i][j+1].getValue()) {
                     return true;
                 }
-                if (i != FIELD_WIDTH-1 && gameTiles[i][j].value == gameTiles[i+1][j].value) {
+                if (i != FIELD_WIDTH-1 && gameTiles[i][j].getValue() == gameTiles[i+1][j].getValue()) {
                     return true;
                 }
             }
@@ -59,7 +59,7 @@ public class Model {
             return;
         }
         Tile emptyTile = emptyTiles.get((int)(Math.random() * emptyTiles.size()));
-        emptyTile.value = Math.random() < 0.9 ? 2 : 4;
+        emptyTile.setValue(Math.random() < 0.9 ? 2 : 4);
     }
 
     private List<Tile> getEmptyTiles() {
@@ -90,16 +90,16 @@ public class Model {
         int[] compressed = new int[tiles.length];
         int k = 0;
         for (int i = 0; i < tiles.length; i++) {
-            if (tiles[i].value > 0) {
-                compressed[k] = tiles[i].value;
+            if (tiles[i].getValue() > 0) {
+                compressed[k] = tiles[i].getValue();
                 k++;
             }
         }
 
         for (int i = 0; i < tiles.length; i++) {
-            if (tiles[i].value != compressed[i]) {
+            if (tiles[i].getValue() != compressed[i]) {
                 changed = true;
-                tiles[i].value = compressed[i];
+                tiles[i].setValue(compressed[i]);
             }
         }
         return changed;
@@ -108,17 +108,18 @@ public class Model {
     private boolean mergeTiles(Tile[] tiles) {
         boolean changed = false;
         for (int i = 0; i < tiles.length-1; i++) {
-            if (tiles[i].value != 0 && tiles[i].value == tiles[i+1].value) {
+            int value = tiles[i].getValue();
+            if (value != 0 && value == tiles[i+1].getValue()) {
                 changed = true;
-                tiles[i].value *= 2;
+                tiles[i].setValue(value * 2);
 
-                score += tiles[i].value;
-                maxTile = tiles[i].value > maxTile ? tiles[i].value : maxTile;
+                score += tiles[i].getValue();
+                maxTile = tiles[i].getValue() > maxTile ? tiles[i].getValue() : maxTile;
 
                 for (int j = i+1; j < tiles.length-1; j++) {
-                    tiles[j].value = tiles[j+1].value;
+                    tiles[j].setValue(tiles[j+1].getValue());
                 }
-                tiles[tiles.length-1].value = 0;
+                tiles[tiles.length-1].setValue(0);
             }
         }
         return changed;
@@ -179,13 +180,13 @@ public class Model {
         int[][] rotated = new int[len][len];
         for (int i = 0; i < len; i++) {
             for (int j = 0; j < len; j++) {
-                rotated[j][len-i-1] = gameTiles[i][j].value;
+                rotated[j][len-i-1] = gameTiles[i][j].getValue();
             }
         }
 
         for (int i = 0; i < len; i++) {
             for (int j = 0; j < len; j++) {
-                gameTiles[i][j].value = rotated[i][j];
+                gameTiles[i][j].setValue(rotated[i][j]);
             }
         }
     }
@@ -194,7 +195,7 @@ public class Model {
         Tile[][] savedTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
         for (int i = 0; i < FIELD_WIDTH; i++) {
             for (int j = 0; j < FIELD_WIDTH; j++) {
-                savedTiles[i][j] = new Tile(tiles[i][j].value);
+                savedTiles[i][j] = new Tile(tiles[i][j].getValue());
             }
         }
         previousStates.push(savedTiles);
@@ -260,13 +261,13 @@ public class Model {
         int sumAfter = 0, sumBefore = 0;
         for (int i = 0; i < FIELD_WIDTH; i++) {
             for (int j = 0; j < FIELD_WIDTH; j++) {
-                sumAfter += gameTiles[i][j].value;
+                sumAfter += gameTiles[i][j].getValue();
             }
         }
         for (int i = 0; i < FIELD_WIDTH; i++) {
             for (int j = 0; j < FIELD_WIDTH; j++) {
-                //sumBefore += previousStates.peek()[i][j].value;
-                sumBefore += previousStates.get(previousStates.size()-ANALYSIS_DEPTH)[i][j].value;
+                //sumBefore += previousStates.peek()[i][j].getValue();
+                sumBefore += previousStates.get(previousStates.size()-ANALYSIS_DEPTH)[i][j].getValue();
             }
         }
         return sumAfter != sumBefore;

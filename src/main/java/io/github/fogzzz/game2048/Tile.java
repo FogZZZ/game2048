@@ -1,16 +1,19 @@
 package io.github.fogzzz.game2048;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.awt.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tile {
-    int value;
 
-    public Tile(int value) {
-        this.value = value;
-    }
-
-    public Tile() {
-    }
+    @Getter
+    @Setter
+    private int value;
 
     public boolean isEmpty() {
         return value == 0;
