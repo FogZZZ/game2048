@@ -1,0 +1,83 @@
+package io.github.fogzzz.game2048.client;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.PostConstruct;
+
+import static java.lang.String.format;
+
+@Getter
+@Setter
+@Component
+@RequiredArgsConstructor
+public class ModelImpl implements Model {
+
+    private final RestTemplate restTemplate;
+
+    @Value("${server.address}")
+    private String serverAddress;
+    @Value("${server.port}")
+    private String serverPort;
+    private String serverUrl;
+
+    @PostConstruct
+    public void init() {
+        serverUrl = format("http://%s:%s/", serverAddress, serverPort);
+    }
+
+    @Override
+    public Tile[][] getGameTiles() {
+        return restTemplate.getForObject(serverUrl + "game_tiles", Tile[][].class);
+    }
+
+    @Override
+    public int getScore() {
+        return restTemplate.getForObject(serverUrl + "score", Integer.class);
+    }
+
+    @Override
+    public int getMaxTile() {
+        return restTemplate.getForObject(serverUrl + "max_tile", Integer.class);
+    }
+
+    @Override
+    public void resetGameTiles() {
+        restTemplate.postForEntity(serverUrl + "reset_game_tiles", null, String.class);
+    }
+
+    @Override
+    public void resetGame() {
+        restTemplate.postForEntity(serverUrl + "reset_game", null, String.class);
+    }
+
+    @Override
+    public boolean canMove() {
+        return restTemplate.getForObject(serverUrl + "can_move", Boolean.class);
+    }
+
+    @Override
+    public void move(String direction) {
+        restTemplate.postForEntity(serverUrl + "move?direction=" + direction, null, String.class);
+    }
+
+    @Override
+    public void rollback() {
+        restTemplate.postForEntity(serverUrl + "rollback", null, String.class);
+    }
+
+    @Override
+    public void randomMove() {
+        restTemplate.postForEntity(serverUrl + "random_move", null, String.class);
+    }
+
+    @Override
+    public void autoMove() {
+         restTemplate.postForEntity(serverUrl + "auto_move", null, String.class);
+    }
+}
+

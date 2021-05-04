@@ -1,4 +1,4 @@
-package io.github.fogzzz.game2048;
+package io.github.fogzzz.game2048.server.model;
 
 public class MoveEfficiency implements Comparable<MoveEfficiency> {
     private int numberOfEmptyTiles;

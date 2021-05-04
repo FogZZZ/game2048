@@ -1,4 +1,4 @@
-package io.github.fogzzz.game2048;
+package io.github.fogzzz.game2048.client;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,21 +14,6 @@ public class Controller extends KeyAdapter {
     @Setter
     private View view;
     private static final int WINNING_TILE = 2048;
-
-    Tile[][] getGameTiles() {
-        return model.getGameTiles();
-    }
-
-    int getScore() {
-        return model.score;
-    }
-
-    void resetGame() {
-        model.score = 0;
-        model.maxTile = 0;
-
-        model.resetGameTiles();
-    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -47,16 +32,16 @@ public class Controller extends KeyAdapter {
         }
 
         if (e.getKeyCode() ==  KeyEvent.VK_LEFT) {
-            model.left();
+            model.move("left");
         }
         if (e.getKeyCode() ==  KeyEvent.VK_RIGHT) {
-            model.right();
+            model.move("right");
         }
         if (e.getKeyCode() ==  KeyEvent.VK_UP) {
-            model.up();
+            model.move("up");
         }
         if (e.getKeyCode() ==  KeyEvent.VK_DOWN) {
-            model.down();
+            model.move("down");
         }
         if (e.getKeyCode() == KeyEvent.VK_R) {
             model.randomMove();
@@ -65,12 +50,24 @@ public class Controller extends KeyAdapter {
             model.autoMove();
         }
 
-        if (model.maxTile == WINNING_TILE) {
+        if (model.getMaxTile() == WINNING_TILE) {
             view.repaint();
             view.showWinDialog();
         }
 
         view.repaint();
+    }
+
+    Tile[][] getGameTiles() {
+        return model.getGameTiles();
+    }
+
+    int getScore() {
+        return model.getScore();
+    }
+
+    private void resetGame() {
+        model.resetGame();
     }
 
     public View getView() {

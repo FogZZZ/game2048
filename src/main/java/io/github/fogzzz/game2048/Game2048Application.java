@@ -1,8 +1,12 @@
 package io.github.fogzzz.game2048;
 
+import io.github.fogzzz.game2048.client.Game;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * план:
@@ -22,5 +26,10 @@ public class Game2048Application {
         ApplicationContext ctx = new SpringApplicationBuilder(Game2048Application.class).headless(false).run(args);
         var game = ctx.getBean("game", Game.class);
         game.start();
+    }
+
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder.build();
     }
 }

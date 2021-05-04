@@ -1,4 +1,4 @@
-package io.github.fogzzz.game2048;
+package io.github.fogzzz.game2048.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
