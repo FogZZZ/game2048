@@ -1,5 +1,8 @@
-package io.github.fogzzz.game2048.client;
+package io.github.fogzzz.game2048.client.service;
 
+import io.github.fogzzz.game2048.client.errorhandling.HandleException;
+import io.github.fogzzz.game2048.client.view.Tile;
+import io.github.fogzzz.game2048.client.dto.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,8 +17,9 @@ import static java.lang.String.format;
 @Getter
 @Setter
 @Component
+@HandleException
 @RequiredArgsConstructor
-public class ModelImpl implements Model {
+public class RestServiceImpl implements RestService {
 
     private final RestTemplate restTemplate;
 
@@ -31,6 +35,21 @@ public class ModelImpl implements Model {
     }
 
     @Override
+    public boolean checkUserName(String name) {
+        return restTemplate.getForObject(serverUrl + "check_user_name?name=" + name, Boolean.class);
+    }
+
+    @Override
+    public User registerUser(String name, String password) {
+        return restTemplate.postForObject(serverUrl + "register_user", new User(name, password), User.class);
+    }
+
+    @Override
+    public User loginUser(String name, String password) {
+        return restTemplate.postForObject(serverUrl + "login_user", new User(name, password), User.class);
+    }
+
+    @Override
     public Tile[][] getGameTiles() {
         return restTemplate.getForObject(serverUrl + "game_tiles", Tile[][].class);
     }
@@ -43,11 +62,6 @@ public class ModelImpl implements Model {
     @Override
     public int getMaxTile() {
         return restTemplate.getForObject(serverUrl + "max_tile", Integer.class);
-    }
-
-    @Override
-    public void resetGameTiles() {
-        restTemplate.postForEntity(serverUrl + "reset_game_tiles", null, String.class);
     }
 
     @Override

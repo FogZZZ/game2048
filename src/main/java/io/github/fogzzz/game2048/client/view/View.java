@@ -1,11 +1,14 @@
-package io.github.fogzzz.game2048.client;
+package io.github.fogzzz.game2048.client.view;
 
+import io.github.fogzzz.game2048.client.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.swing.*;
 import java.awt.*;
+
+import static java.lang.String.format;
 
 @Component
 @RequiredArgsConstructor
@@ -37,14 +40,22 @@ public class View extends JPanel {
         }
 
         g.drawString("Score: " + controller.getScore(), 140, 465);
+        if (controller.getUserName() != null) {
+            g.drawString(format("%s Max: %d", controller.getUserName(), controller.getMaxScore()),
+                    50, 500);
+        }
     }
 
-    void showLostDialog() {
+    public void showLostDialog() {
         JOptionPane.showMessageDialog(this, "You've lost :(");
     }
 
-    void showWinDialog() {
+    public void showWinDialog() {
         JOptionPane.showMessageDialog(this, "You've won!");
+    }
+
+    public void showErrorDialog(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
 
     private void drawTile(Graphics g2, Tile tile, int x, int y) {

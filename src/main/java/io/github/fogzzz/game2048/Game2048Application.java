@@ -1,6 +1,6 @@
 package io.github.fogzzz.game2048;
 
-import io.github.fogzzz.game2048.client.Game;
+import io.github.fogzzz.game2048.client.view.Game;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;

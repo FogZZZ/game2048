@@ -1,4 +1,4 @@
-package io.github.fogzzz.game2048.client;
+package io.github.fogzzz.game2048.client.view;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
