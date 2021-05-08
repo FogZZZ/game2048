@@ -20,6 +20,8 @@ public class View extends JPanel {
 
     private final Controller controller;
 
+    private boolean isErrorExit;
+
     @PostConstruct
     public void init() {
         setFocusable(true);
@@ -28,21 +30,27 @@ public class View extends JPanel {
         controller.setView(this);
     }
 
+    public void setErrorExit(boolean isErrorExit) {
+        this.isErrorExit = isErrorExit;
+    }
+
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
-        g.setColor(BG_COLOR);
-        g.fillRect(0, 0, this.getSize().width, this.getSize().height);
-        for (int x = 0; x < 4; x++) {
-            for (int y = 0; y < 4; y++) {
-                drawTile(g, controller.getGameTiles()[y][x], x, y);
+        if (!isErrorExit) {
+            super.paint(g);
+            g.setColor(BG_COLOR);
+            g.fillRect(0, 0, this.getSize().width, this.getSize().height);
+            for (int x = 0; x < 4; x++) {
+                for (int y = 0; y < 4; y++) {
+                    drawTile(g, controller.getGameTiles()[y][x], x, y);
+                }
             }
-        }
 
-        g.drawString("Score: " + controller.getScore(), 140, 465);
-        if (controller.getUserName() != null) {
-            g.drawString(format("%s Max: %d", controller.getUserName(), controller.getMaxScore()),
-                    50, 500);
+            g.drawString("Score: " + controller.getScore(), 140, 465);
+            if (controller.getUserName() != null) {
+                g.drawString(format("%s Max: %d", controller.getUserName(), controller.getMaxScore()),
+                        50, 500);
+            }
         }
     }
 

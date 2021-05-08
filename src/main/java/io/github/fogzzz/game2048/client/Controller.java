@@ -109,6 +109,7 @@ public class Controller extends KeyAdapter {
     }
 
     public void errorExit(String errorMsg) {
+        view.setErrorExit(true);
         view.showErrorDialog(errorMsg);
         System.exit(1);
     }
