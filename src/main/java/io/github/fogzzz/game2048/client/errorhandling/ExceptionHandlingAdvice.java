@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import static java.lang.String.format;
+
 @Slf4j
 @Aspect
 @Component
@@ -29,11 +31,11 @@ public class ExceptionHandlingAdvice {
                     && e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
                 return null;
             } else {
-                controller.errorExit(e.getMessage());
+                controller.errorExit(format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            controller.errorExit(e.getMessage());
+            controller.errorExit(format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
         }
         return result;
     }
