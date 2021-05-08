@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 
@@ -24,7 +25,12 @@ public class ExceptionHandlingAdvice {
             result = joinPoint.proceed();
         } catch (HttpStatusCodeException e) {
             log.error(e.getMessage(), e);
-            controller.errorExit(e.getStatusCode() + " " + e.getMessage());
+            if (joinPoint.getSignature().getName().equals("loginUser")
+                    && e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
+                return null;
+            } else {
+                controller.errorExit(e.getMessage());
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             controller.errorExit(e.getMessage());

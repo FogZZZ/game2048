@@ -11,7 +11,6 @@ import javax.swing.*;
 public class Game extends JFrame {
 
     private final Controller controller;
-    private final Login login;
 
     public void start() {
         this.setTitle("2048");
@@ -24,6 +23,6 @@ public class Game extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        login.loginUser(this);
+        controller.loginUser();
     }
 }

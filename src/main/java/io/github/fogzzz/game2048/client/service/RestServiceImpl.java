@@ -40,13 +40,13 @@ public class RestServiceImpl implements RestService {
     }
 
     @Override
-    public User registerUser(String name, String password) {
-        return restTemplate.postForObject(serverUrl + "register_user", new User(name, password), User.class);
+    public User registerUser(User user) {
+        return restTemplate.postForObject(serverUrl + "register_user", user, User.class);
     }
 
     @Override
-    public User loginUser(String name, String password) {
-        return restTemplate.postForObject(serverUrl + "login_user", new User(name, password), User.class);
+    public User loginUser(User user) {
+        return restTemplate.postForObject(serverUrl + "login_user", user, User.class);
     }
 
     @Override

@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import static java.lang.String.format;
+import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +29,34 @@ public class View extends JPanel {
         addKeyListener(controller);
 
         controller.setView(this);
+    }
+
+    public String showEnterNameDialog() {
+        return JOptionPane.showInputDialog(this,
+                "Введите свой никнейм:",
+                "Вход в игру",
+                QUESTION_MESSAGE);
+    }
+
+    public void showGuestDialog() {
+        JOptionPane.showMessageDialog(this,
+                "Вы вошли как Гость, рекорд не будет сохранен.",
+                "Вход в игру",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public String showEnterPasswordDialog(String message) {
+        return JOptionPane.showInputDialog(this,
+                message,
+                "Вход в игру",
+                QUESTION_MESSAGE);
+    }
+
+    public void showAuthFailureDialog() {
+        JOptionPane.showMessageDialog(this,
+                "Введен неверный пароль, попробуйте еще раз.",
+                "Вход в игру",
+                JOptionPane.WARNING_MESSAGE);
     }
 
     public void setErrorExit(boolean isErrorExit) {

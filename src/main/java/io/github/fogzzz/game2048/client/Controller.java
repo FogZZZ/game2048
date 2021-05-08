@@ -2,6 +2,7 @@ package io.github.fogzzz.game2048.client;
 
 import io.github.fogzzz.game2048.client.dto.User;
 import io.github.fogzzz.game2048.client.service.RestService;
+import io.github.fogzzz.game2048.client.service.UserService;
 import io.github.fogzzz.game2048.client.view.Tile;
 import io.github.fogzzz.game2048.client.view.View;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +16,42 @@ import java.awt.event.KeyEvent;
 @RequiredArgsConstructor
 public class Controller extends KeyAdapter {
     private final RestService restService;
+    private final UserService userService;
     @Setter
     private View view;
     private static final int WINNING_TILE = 2048;
 
     private User user;
+
+    public void loginUser() {
+        while (true) {
+            String name = view.showEnterNameDialog();
+            if (name == null) {
+                view.showGuestDialog();
+                this.user = new User("Гость");
+                view.repaint();
+                return;
+            }
+
+            if (name.isBlank()) continue;
+
+            this.user = new User(name);
+            boolean userExists = userService.checkUserName(name);
+
+            String message = userExists ? "Введите пароль:" : "Вы новый пользователь, задайте пароль:";
+            String password = view.showEnterPasswordDialog(message);
+            if (password == null || password.isBlank()) continue;
+
+            this.user = userService.sendCredentials(name, password, userExists);
+            if (this.user == null) {
+                view.showAuthFailureDialog();
+                continue;
+            }
+
+            view.repaint();
+            return;
+        }
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -64,32 +96,6 @@ public class Controller extends KeyAdapter {
         view.repaint();
     }
 
-    public Tile[][] getGameTiles() {
-        return restService.getGameTiles();
-    }
-
-    public int getScore() {
-        return restService.getScore();
-    }
-
-    private void resetGame() {
-        restService.resetGame();
-    }
-
-    public View getView() {
-        return view;
-    }
-
-    public void registerUser(String name, String password) {
-        this.user = restService.registerUser(name, password);
-        view.repaint();
-    }
-
-    public void loginUser(String name, String password) {
-        this.user = restService.loginUser(name, password);
-        view.repaint();
-    }
-
     public String getUserName() {
         if (user == null) {
             return "";
@@ -104,8 +110,20 @@ public class Controller extends KeyAdapter {
         return user.getMaxScore();
     }
 
-    public boolean checkUserName(String name) {
-        return restService.checkUserName(name);
+    public Tile[][] getGameTiles() {
+        return restService.getGameTiles();
+    }
+
+    public int getScore() {
+        return restService.getScore();
+    }
+
+    private void resetGame() {
+        restService.resetGame();
+    }
+
+    public View getView() {
+        return view;
     }
 
     public void errorExit(String errorMsg) {
