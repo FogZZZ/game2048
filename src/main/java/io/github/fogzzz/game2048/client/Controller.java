@@ -44,8 +44,7 @@ public class Controller extends KeyAdapter {
             String password = view.showEnterPasswordDialog(message);
             if (password == null || password.isBlank()) continue;
 
-            this.user.setPassword(password);
-            User updatedUser = userService.sendCredentials(this.user, userExists);
+            User updatedUser = userService.sendCredentials(this.user, password, userExists);
             if (updatedUser == null) {
                 view.showAuthFailureDialog();
                 continue;
