@@ -1,16 +1,22 @@
 package io.github.fogzzz.game2048.client.service;
 
+import io.github.fogzzz.game2048.client.dto.User;
 import io.github.fogzzz.game2048.client.errorhandling.HandleException;
 import io.github.fogzzz.game2048.client.view.Tile;
-import io.github.fogzzz.game2048.client.dto.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 
 import static java.lang.String.format;
 
@@ -96,7 +102,18 @@ public class RestServiceImpl implements RestService {
 
     @Override
     public User saveMaxScore(User user) {
-        return restTemplate.postForObject(serverUrl + "save_max_score", user, User.class);
+        ResponseEntity<User> response = restTemplate.exchange(serverUrl + "save_max_score", HttpMethod.POST,
+                new HttpEntity<>(user, createHeaders(user)), User.class);
+        return response.getBody();
+    }
+
+    private HttpHeaders createHeaders(User user) {
+        return new HttpHeaders() {{
+            String auth = user.getName() + ":" + user.getPassword();
+            byte[] encoded = Base64.encodeBase64(auth.getBytes(StandardCharsets.US_ASCII));
+            String headerValue = "Basic " + new String(encoded, StandardCharsets.US_ASCII);
+            set("Authorization", headerValue);
+        }};
     }
 }
 

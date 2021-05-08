@@ -35,6 +35,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveMaxScore(User user) {
-        return restService.saveMaxScore(new User(user.getName()));
+        return restService.saveMaxScore(user);
     }
 }
