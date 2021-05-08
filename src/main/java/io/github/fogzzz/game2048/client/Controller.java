@@ -7,6 +7,7 @@ import io.github.fogzzz.game2048.client.view.Tile;
 import io.github.fogzzz.game2048.client.view.View;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.awt.event.KeyAdapter;
@@ -16,6 +17,7 @@ import java.awt.event.KeyEvent;
 @RequiredArgsConstructor
 public class Controller extends KeyAdapter {
     private final RestService restService;
+    @Qualifier("userClientService")
     private final UserService userService;
     @Setter
     private View view;

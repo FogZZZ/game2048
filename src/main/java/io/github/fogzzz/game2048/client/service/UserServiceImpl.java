@@ -4,7 +4,7 @@ import io.github.fogzzz.game2048.client.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("userClientService")
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final RestService restService;
