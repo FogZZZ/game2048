@@ -15,22 +15,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User sendCredentials(String name, String password, boolean userExists) {
+    public User sendCredentials(User user, boolean userExists) {
         if (userExists) {
-            return loginUser(name, password);
+            return loginUser(user);
         } else {
-            return registerUser(name, password);
+            return registerUser(user);
         }
     }
 
-    @Override
-    public User loginUser(String name, String password) {
-        return restService.loginUser(new User(name, password));
+    private User loginUser(User user) {
+        return restService.loginUser(user);
     }
 
-    @Override
-    public User registerUser(String name, String password) {
-        return restService.registerUser(new User(name, password));
+    private User registerUser(User user) {
+        return restService.registerUser(user);
     }
 
     @Override

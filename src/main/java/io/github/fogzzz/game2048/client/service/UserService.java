@@ -5,11 +5,7 @@ import io.github.fogzzz.game2048.client.dto.User;
 public interface UserService {
     boolean checkUserName(String name);
 
-    User sendCredentials(String name, String password, boolean userExists);
-
-    User loginUser(String name, String password);
-
-    User registerUser(String name, String password);
+    User sendCredentials(User user, boolean userExists);
 
     User saveMaxScore(User user);
 }

@@ -52,7 +52,10 @@ public class RestServiceImpl implements RestService {
 
     @Override
     public User loginUser(User user) {
-        return restTemplate.postForObject(serverUrl + "login_user", user, User.class);
+        ResponseEntity<User> response = restTemplate.exchange(serverUrl + "login_user?name=" + user.getName(), HttpMethod.POST,
+                new HttpEntity<>(createHeaders(user)), User.class);
+        return response.getBody();
+//        return restTemplate.postForObject(serverUrl + "login_user", user, User.class);
     }
 
     @Override
@@ -102,8 +105,8 @@ public class RestServiceImpl implements RestService {
 
     @Override
     public User saveMaxScore(User user) {
-        ResponseEntity<User> response = restTemplate.exchange(serverUrl + "save_max_score", HttpMethod.POST,
-                new HttpEntity<>(user, createHeaders(user)), User.class);
+        ResponseEntity<User> response = restTemplate.exchange(serverUrl + "save_max_score?name=" + user.getName(), HttpMethod.POST,
+                new HttpEntity<>(createHeaders(user)), User.class);
         return response.getBody();
     }
 

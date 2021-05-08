@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/save_max_score").authenticated()
+                    .antMatchers("/login_user", "/save_max_score").authenticated()
                     .anyRequest().permitAll()
                 .and().httpBasic()
                 .and().sessionManagement().disable();

@@ -1,11 +1,9 @@
 package io.github.fogzzz.game2048.server.controller;
 
 import io.github.fogzzz.game2048.server.dto.UserDto;
-import io.github.fogzzz.game2048.server.repository.UserRepo;
 import io.github.fogzzz.game2048.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,11 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepo userRepo;
     private final UserService userService;
 
     @GetMapping("check_user_name")
-    public Boolean checkUserName(@RequestParam("name") String name) {
+    public Boolean checkUserName(@RequestParam String name) {
         return userService.checkUserName(name);
     }
 
@@ -27,12 +24,12 @@ public class UserController {
     }
 
     @PostMapping("login_user")
-    public ResponseEntity<UserDto> loginUser(@RequestBody UserDto userDto) {
-        return userService.loginUser(userDto);
+    public UserDto loginUser(@RequestParam String name) {
+        return userService.getUserByName(name);
     }
 
     @PostMapping("save_max_score")
-    public UserDto saveMaxScore(@RequestBody UserDto userDto) {
-        return userService.saveMaxScoreIfNeed(userDto);
+    public UserDto saveMaxScore(@RequestParam String name) {
+        return userService.saveMaxScoreIfNeed(name);
     }
 }

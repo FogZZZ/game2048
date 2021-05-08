@@ -28,7 +28,7 @@ public class ExceptionHandlingAdvice {
         } catch (HttpStatusCodeException e) {
             log.error(e.getMessage(), e);
             if (joinPoint.getSignature().getName().equals("loginUser")
-                    && e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
+                    && e.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
                 return null;
             } else {
                 controller.errorExit(format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));

@@ -4,8 +4,6 @@ import io.github.fogzzz.game2048.server.dto.UserDto;
 import io.github.fogzzz.game2048.server.entity.User;
 import io.github.fogzzz.game2048.server.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -29,18 +27,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserDto> loginUser(UserDto userDto) {
-        User entity = userRepo.getUserByName(userDto.getName());
-        if (entity.getPassword().equals(userDto.getPassword())) {
-            return ResponseEntity.ok(entity.toDto());
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+    public UserDto getUserByName(String name) {
+        return userRepo.getUserByName(name).toDto();
     }
 
     @Override
-    public UserDto saveMaxScoreIfNeed(UserDto userDto) {
-        User user = userRepo.getUserByName(userDto.getName());
+    public UserDto saveMaxScoreIfNeed(String name) {
+        User user = userRepo.getUserByName(name);
         int currentMaxScore = gameStateService.getScore();
         if (user.getMaxScore() < currentMaxScore) {
             user.setMaxScore(currentMaxScore);

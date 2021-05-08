@@ -44,13 +44,14 @@ public class Controller extends KeyAdapter {
             String password = view.showEnterPasswordDialog(message);
             if (password == null || password.isBlank()) continue;
 
-            this.user = userService.sendCredentials(name, password, userExists);
-            if (this.user == null) {
+            this.user.setPassword(password);
+            User updatedUser = userService.sendCredentials(this.user, userExists);
+            if (updatedUser == null) {
                 view.showAuthFailureDialog();
                 continue;
             }
 
-            this.user.setPassword(password);
+            this.user.setMaxScore(updatedUser.getMaxScore());
             view.repaint();
             return;
         }
