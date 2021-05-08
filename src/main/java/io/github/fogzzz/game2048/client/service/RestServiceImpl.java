@@ -93,5 +93,10 @@ public class RestServiceImpl implements RestService {
     public void autoMove() {
          restTemplate.postForEntity(serverUrl + "auto_move", null, String.class);
     }
+
+    @Override
+    public User saveMaxScore(User user) {
+        return restTemplate.postForObject(serverUrl + "save_max_score", user, User.class);
+    }
 }
 

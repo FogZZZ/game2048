@@ -8,5 +8,5 @@ public interface UserService {
     Boolean checkUserName(String name);
     UserDto registerUser(UserDto user);
     ResponseEntity<UserDto> loginUser(UserDto userDto);
-    void saveMaxScoreIfNeed(UserDto userDto);
+    UserDto saveMaxScoreIfNeed(UserDto userDto);
 }

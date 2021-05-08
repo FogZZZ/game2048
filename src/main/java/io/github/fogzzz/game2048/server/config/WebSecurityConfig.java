@@ -10,9 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/save_max_score").authenticated()
-                .anyRequest().permitAll()
-                .and().csrf().disable();
+        http
+                .csrf().disable()
+                .authorizeRequests()
+//                    .antMatchers("/save_max_score").authenticated()
+                    .anyRequest().permitAll()
+                .and().httpBasic()
+                .and().sessionManagement().disable();
     }
 }

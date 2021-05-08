@@ -32,4 +32,9 @@ public class UserServiceImpl implements UserService {
     public User registerUser(String name, String password) {
         return restService.registerUser(new User(name, password));
     }
+
+    @Override
+    public User saveMaxScore(User user) {
+        return restService.saveMaxScore(new User(user.getName()));
+    }
 }

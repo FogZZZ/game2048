@@ -66,6 +66,7 @@ public class Controller extends KeyAdapter {
         }
 
         if (!restService.canMove()) {
+            this.user = userService.saveMaxScore(user);
             view.showLostDialog();
             view.repaint();
             return;
@@ -92,6 +93,7 @@ public class Controller extends KeyAdapter {
 
         if (restService.getMaxTile() == WINNING_TILE) {
             view.repaint();
+            this.user = userService.saveMaxScore(user);
             view.showWinDialog();
         }
 

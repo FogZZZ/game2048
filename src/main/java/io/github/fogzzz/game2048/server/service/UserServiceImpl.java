@@ -6,6 +6,8 @@ import io.github.fogzzz.game2048.server.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
+    private final GameStateService gameStateService;
 
     @Override
     public Boolean checkUserName(String name) {
@@ -36,11 +39,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveMaxScoreIfNeed(UserDto userDto) {
+    public UserDto saveMaxScoreIfNeed(UserDto userDto) {
         User user = userRepo.getUserByName(userDto.getName());
-        if (user.getMaxScore() < userDto.getMaxScore()) {
-            user.setMaxScore(userDto.getMaxScore());
-            userRepo.save(user);
+        int currentMaxScore = gameStateService.getScore();
+        if (user.getMaxScore() < currentMaxScore) {
+            user.setMaxScore(currentMaxScore);
+            user = userRepo.save(user);
         }
+        return user.toDto();
     }
 }

@@ -8,11 +8,12 @@ public interface RestService {
     boolean checkUserName(String name);
     User registerUser(User user);
     User loginUser(User user);
+    User saveMaxScore(User user);
 
     Tile[][] getGameTiles();
     int getScore();
-    int getMaxTile();
 
+    int getMaxTile();
     void resetGame();
     boolean canMove();
     void move(String direction);

@@ -10,4 +10,6 @@ public interface UserService {
     User loginUser(String name, String password);
 
     User registerUser(String name, String password);
+
+    User saveMaxScore(User user);
 }

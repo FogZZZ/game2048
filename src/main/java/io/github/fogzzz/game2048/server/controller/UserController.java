@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("save_max_score")
-    public void saveMaxScore(@RequestBody UserDto userDto) {
-        userService.saveMaxScoreIfNeed(userDto);
+    public UserDto saveMaxScore(@RequestBody UserDto userDto) {
+        return userService.saveMaxScoreIfNeed(userDto);
     }
 }
