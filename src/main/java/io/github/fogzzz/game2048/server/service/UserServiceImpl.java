@@ -4,8 +4,10 @@ import io.github.fogzzz.game2048.server.dto.UserDto;
 import io.github.fogzzz.game2048.server.entity.User;
 import io.github.fogzzz.game2048.server.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +16,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
     private final GameStateService gameStateService;
+    @Setter
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Boolean checkUserName(String name) {
@@ -22,7 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto registerUser(UserDto user) {
-        User entity = userRepo.save(user.toEntity());
+        User entity = user.toEntity();
+        entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        entity = userRepo.save(entity);
         return entity.toDto();
     }
 
