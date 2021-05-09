@@ -2,61 +2,27 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'war'
-
-    id 'org.liquibase.gradle' version '2.0.3'
 }
-
-group = 'io.github.fogzzz'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+allprojects {
+    repositories {
+        mavenCentral()
     }
 }
 
-repositories {
-    mavenCentral()
-}
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'org.liquibase:liquibase-core'
-//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    implementation 'ch.qos.logback:logback-core'
-    implementation 'ch.qos.logback:logback-classic'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
-    liquibaseRuntime 'org.liquibase:liquibase-core'
-    liquibaseRuntime 'org.postgresql:postgresql'
-    liquibaseRuntime 'org.yaml:snakeyaml'
-    liquibaseRuntime 'ch.qos.logback:logback-core'
-    liquibaseRuntime 'ch.qos.logback:logback-classic'
-}
+    sourceCompatibility = '11'
 
-test {
-    useJUnitPlatform()
-}
-
-liquibase {
-    activities {
-        main {
-            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
-            url 'jdbc:postgresql://localhost:5432/game2048'
-            username 'andrey'
-            password 'andrey'
-            logLevel 'debug'
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
         }
     }
 }
+
+
+

@@ -1,0 +1,47 @@
+plugins {
+    id 'war'
+    id 'org.liquibase.gradle' version '2.0.3'
+}
+
+group = 'io.github.fogzzz.game2048'
+version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    implementation 'ch.qos.logback:logback-core'
+    implementation 'ch.qos.logback:logback-classic'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    implementation 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'org.postgresql:postgresql'
+    liquibaseRuntime 'org.yaml:snakeyaml'
+    liquibaseRuntime 'ch.qos.logback:logback-core'
+    liquibaseRuntime 'ch.qos.logback:logback-classic'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
+            url 'jdbc:postgresql://localhost:5432/game2048'
+            username 'andrey'
+            password 'andrey'
+            logLevel 'debug'
+        }
+    }
+}

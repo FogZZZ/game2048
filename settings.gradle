@@ -1,1 +1,4 @@
 rootProject.name = 'game2048'
+include 'server2048'
+include 'client2048'
+
