@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
  * - запустить приложение в докере
  * - добавить гит                                               Готово!
  * - сделать клиент-серверную архитектуру с http протоколом     Готово!
+ * - сделать сервер многопоточным
  * - перевести фронтенд на html + css
  */
 @SpringBootApplication
